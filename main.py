@@ -15,7 +15,7 @@ async def start_check(background_tasks: BackgroundTasks):
 
 async def run_check(check_id):
     # Simulando um processo demorado
-    time.sleep(5)
+    time.sleep(50)
     # Simulando um resultado (aprovado ou reprovado)
     results[check_id] = "approved"
 
