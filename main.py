@@ -23,7 +23,7 @@ async def run_check(check_id):
 async def websocket_endpoint(websocket: WebSocket, check_id: str):
     await websocket.accept()
     await asyncio.sleep(5)
-    await websocket.send_text(f"{results[check_id]}")
+    await websocket.send_text("approved")
     await asyncio.sleep(5)
 
 
