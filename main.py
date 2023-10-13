@@ -29,6 +29,7 @@ async def websocket_endpoint(websocket: WebSocket, check_id: str):
     if websocket.client_state == WebSocketState.CONNECTED:
         try:
             await websocket.send_text("approved")
+            await asyncio.sleep(10)
         except Exception as e:
             # Handle the error, e.g., log it.
             print(f"Error sending message: {e}")
