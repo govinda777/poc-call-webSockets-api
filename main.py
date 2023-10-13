@@ -17,15 +17,19 @@ async def start_check(background_tasks: BackgroundTasks):
 
 async def run_check(check_id):
     # Simulando um processo demorado
-    await asyncio.sleep(20)
+    await asyncio.sleep(1)
     # Simulando um resultado (aprovado ou reprovado)
     results[check_id] = "approved"
 
 @app.websocket("/ws/{check_id}")
 async def websocket_endpoint(websocket: WebSocket, check_id: str):
     await websocket.accept()
-    for _ in range(10):  # Espera até 60 segundos
+    print(f"WebSocket connection accepted for check_id: {check_id}")
+    for _ in range(10):  # Espera até 10 segundos
         if check_id in results:
             await websocket.send_text(results[check_id])
+            print(f"Sent result for check_id: {check_id}")
             return
         await asyncio.sleep(1)
+    print(f"No result found for check_id: {check_id} after waiting")
+
