@@ -17,7 +17,7 @@ async def start_check(background_tasks: BackgroundTasks):
 
 async def run_check(check_id):
     # Simulando um processo demorado
-    await asyncio.sleep(20)
+    await asyncio.sleep(10)
     # Simulando um resultado (aprovado ou reprovado)
     results[check_id] = "approved"
 
@@ -28,4 +28,4 @@ async def websocket_endpoint(websocket: WebSocket, check_id: str):
         if check_id in results:
             await websocket.send_text(results[check_id])
             return
-        time.sleep(1)
+        await asyncio.sleep(1)
