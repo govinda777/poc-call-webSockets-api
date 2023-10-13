@@ -29,7 +29,9 @@ async def websocket_endpoint(websocket: WebSocket, check_id: str):
         if check_id in results:
             await websocket.send_text(results[check_id])
             print(f"Sent result for check_id: {check_id}")
+            await websocket.receive_text()  # Aguarda uma mensagem do cliente ou um fechamento
             return
         await asyncio.sleep(1)
     print(f"No result found for check_id: {check_id} after waiting")
+
 
