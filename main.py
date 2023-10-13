@@ -24,7 +24,7 @@ async def websocket_endpoint(websocket: WebSocket, check_id: str):
     await websocket.accept()
     await asyncio.sleep(5)
     await websocket.send_text("approved")
-    await asyncio.sleep(5)
+    await asyncio.sleep(10)
 
 
 
