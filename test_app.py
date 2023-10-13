@@ -1,30 +1,21 @@
 from fastapi.testclient import TestClient
 import pytest
-from main import app, run_check, results  # Importe as funções e variáveis necessárias
-import time
+from main import app  # Altere 'your_module_name' para o nome do seu módulo
 
 client = TestClient(app)
 
 def test_start_check():
     response = client.post("/start-check")
     assert response.status_code == 200
-    data = response.json()
-    assert "check_id" in data
-    check_id = data["check_id"]
+    check_id = response.json()
     assert isinstance(check_id, str)
 
-    # Mock the run_check function to make it faster
-    results[check_id] = "approved"
-
-    # Test the WebSocket with the provided check_id
-    with client.websocket_connect(f"/ws/{check_id}") as websocket:
-        assert websocket.receive_text() == "approved"
-
-# Se você ainda quiser testar o WebSocket isoladamente:
 def test_websocket_endpoint():
-    # Mock a result
-    mock_check_id = "mocked-check-id"
-    results[mock_check_id] = "approved"
+    # Gerar um check_id para o teste
+    check_id = client.post("/start-check").json()
 
-    with client.websocket_connect(f"/ws/{mock_check_id}") as websocket:
+    # Conectar via WebSocket
+    with client.websocket_connect(f"/ws/{check_id}") as websocket:
+        # A mensagem esperada é "approved"
         assert websocket.receive_text() == "approved"
+
