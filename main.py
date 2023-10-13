@@ -1,13 +1,10 @@
 import asyncio
-
 from fastapi import FastAPI, WebSocket, BackgroundTasks
-import time
 import uuid
+from starlette.websockets import WebSocketState
 
 app = FastAPI()
 
-# Simulando um armazenamento em memória para os resultados
-results = {}
 
 @app.post("/start-check")
 async def start_check(background_tasks: BackgroundTasks):
@@ -15,16 +12,23 @@ async def start_check(background_tasks: BackgroundTasks):
     background_tasks.add_task(run_check, check_id)
     return check_id
 
+
 async def run_check(check_id):
     # Simulando um resultado (aprovado ou reprovado)
-    results[check_id] = "approved"
+    # Como não estamos mais usando o dicionário 'results', esta função não faz nada útil.
+    # Mantive apenas para manter a estrutura original.
+    pass
+
 
 @app.websocket("/ws/{check_id}")
 async def websocket_endpoint(websocket: WebSocket, check_id: str):
     await websocket.accept()
     await asyncio.sleep(5)
-    await websocket.send_text("approved")
-    await asyncio.sleep(10)
 
-
-
+    # Verificar se a conexão WebSocket ainda está aberta antes de enviar a mensagem
+    if websocket.client_state == WebSocketState.CONNECTED:
+        try:
+            await websocket.send_text("approved")
+        except Exception as e:
+            # Handle the error, e.g., log it.
+            print(f"Error sending message: {e}")
