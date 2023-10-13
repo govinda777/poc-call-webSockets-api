@@ -1,5 +1,3 @@
-import asyncio
-
 from fastapi import FastAPI, WebSocket, BackgroundTasks
 import time
 import uuid
@@ -17,7 +15,7 @@ async def start_check(background_tasks: BackgroundTasks):
 
 async def run_check(check_id):
     # Simulando um processo demorado
-    await asyncio.sleep(1)
+    time.sleep(5)
     # Simulando um resultado (aprovado ou reprovado)
     results[check_id] = "approved"
 
@@ -28,4 +26,4 @@ async def websocket_endpoint(websocket: WebSocket, check_id: str):
         if check_id in results:
             await websocket.send_text(results[check_id])
             return
-        await asyncio.sleep(1)
+        time.sleep(1)
