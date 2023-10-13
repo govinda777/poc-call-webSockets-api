@@ -22,7 +22,7 @@ async def run_check(check_id):
 @app.websocket("/ws/{check_id}")
 async def websocket_endpoint(websocket: WebSocket, check_id: str):
     await websocket.accept()
-    for _ in range(10):  # Espera até 60 segundos
+    for _ in range(30):  # Espera até 60 segundos
         if check_id in results:
             await websocket.send_text(results[check_id])
             return
